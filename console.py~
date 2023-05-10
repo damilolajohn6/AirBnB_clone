@@ -1,0 +1,51 @@
+#!/usr/bin/python3
+
+"""Defines the HBnB console."""
+import re
+import cmd
+import models
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+
+def parse_arg(arg):
+    """
+    Parses the input argument to find either curly braces or brackets,
+    which are then extracted along with any text before them.
+
+    Returns the extracted text as a list with commas stripped from each token.
+    """
+    curly_braces = re.search(r"\{(.*?)\}", arg)
+    brackets = re.search(r"\[(.*?)\]", arg)
+    if curly_braces is None:
+        if brackets is None:
+            return [i.strip(",") for i in arg.split()]
+        else:
+            return parse_brackets(arg, brackets)
+    else:
+        return parse_curly_braces(arg, curly_braces)
+
+    def parse_brackets(arg, brackets):
+        lexer = arg[:brackets.span()[0]].split()
+        retl = [i.strip(",") for i in lexer]
+        retl.append(brackets.group())
+        return retl
+    def parse_curly_braces(arg, curly_braces):
+        lexer = arg[:curly_braces.span()[0]].split()
+        retl = [i.strip(",") for i in lexer]
+        retl.append(curly_braces.group())
+        return retl
+
+class HBNBCommand(cmd, Cmd):
+    """aclass that contains the entry point of the command interpreter.
+       Attributes:
+        prompt (str): The command prompt.
+    """
+    prompt = '(hbnb) '
+    class_list = ['BaseModel', 'User', 'State', 'City', 'Amenity', 'Place',
+                  'Review']
+    
