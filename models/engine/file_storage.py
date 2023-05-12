@@ -88,7 +88,7 @@ class FileStorage:
             "Place": {
                 "city_id": str,
                 "user_id": str,
-                "name": str
+                "name": str,
                 "description": str,
                 "number_rooms": int,
                 "number_bathrooms": int,
